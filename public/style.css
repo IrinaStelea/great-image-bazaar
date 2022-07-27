@@ -22,7 +22,7 @@ main {
 }
 
 p {
-    font-size: 2em;
+    font-size: 1.5em;
     font-weight: 300;
 }
 
@@ -36,7 +36,21 @@ h1 {
     width: 90vw;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 3vw;
-    grid-auto-flow: row;
+    /* make sure rows stay the same height in mobile view */
+    grid-auto-rows: 1fr;
+}
+
+.form-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1vh;
+}
+
+.form-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1vh;
 }
 
 .image {
@@ -45,7 +59,15 @@ h1 {
     align-items: flex-start;
     border: 1px solid black;
     gap: 1vh;
-    padding: 5%;
+}
+
+.btn-submit {
+    margin-top: 2vh;
+    background-color: aquamarine;
+    font-size: 1.2em;
+    padding: 1vh;
+    border: 3px solid transparent;
+    border-radius: 50px;
 }
 
 .image > img {

@@ -12,17 +12,42 @@
     </head>
     <body>
         <main>
-        <h1>Welcome to my image board!</h1>
+        <h1>The image bazaar</h1>
+
+    <form
+        action="/upload"
+        method="post"
+        enctype="multipart/form-data"
+        @submit.prevent="onFormSubmit" >
+
+        <div class="form-upload">
+            <p>Upload your image<p></p>
+            <div class="form-row">
+            <label for="title">Title</label>
+            <input type="text" v-model.trim="title" name="title" id="title" />
+            <label for="description">Description</label>
+            <input type="text" v-model.trim="description" name="description" id="description" />
+            <label for="username">Username</label>
+            <input type="text" v-model.trim="username" name="username" id="username" /></div>
+            <label for="photo">Please select your image</label>
+            <input type="file" accept="image/*" name="photo" id="photo" @change="onFormSubmit"/>
+        </div>
+        <input type="submit" value="Upload!" class="btn-submit"  />
+    </form>
+<!-- show the status message -->
+    <div class="status">{{ message }}</div>
         <p>Latest results:</p>
             <div id="results-grid">
                 <div class="image"
                      v-for="image in images">
                      <img v-bind:src="image.url" v-bind:alt="image.title">
                 <div>{{image.title}}</div>
+                <div>{{image.description}}</div>
+                <div>Uploaded by {{image.username}} on {{cleanDate(image.created_at) }}</div>
                 </div>
             </div>
         </main>
-        <script src="https://unpkg.com/vue@3"></script>
+        <!-- using local build so not necessary <script src="https://unpkg.com/vue@3"></script> -->
         <script
             src="/js/app.js"
             type="module"
