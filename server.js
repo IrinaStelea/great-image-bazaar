@@ -8,43 +8,55 @@ const PORT = 8080;
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
 
 app.get("/images", (req, res) => {
     db.getImages()
         .then((result) => {
             res.json(result.rows);
-            console.log("data is", result.rows);
+            // console.log("data is", result.rows);
         })
         .catch((err) => console.log("error in get images", err));
 });
 
-app.get("*", (req, res) => {
-    //we user render when we
-    res.sendFile(path.join(__dirname, "index.html"));
+//dynamic route for modal
+app.get("/image/:id", (req, res) => {
+    let id = req.params.id;
+    db.getImagesById(id)
+        .then((result) => {
+            // console.log(result.rows);
+            //send response back as json for the fetch
+            return res.json(result.rows);
+        })
+        .catch((err) => {
+            console.log("error in getImagesById", err);
+        });
 });
 
-//calling the upload function after the multer uploader because we depend on that file
-app.post("/upload", uploader.single("photo"), s3.upload, (req, res) => {
+//post for uploading images
+//Note the middleware sequence: calling the upload function after the multer uploader because we depend on that file
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     //get the full URL of the image (amazon url + filename)
     const filePath = path.join(
         "https://s3.amazonaws.com/ihamspiced",
         `${req.file.filename}`
     );
+    // console.log("req.body", req.body);
+    // console.log("req.file", req.file);
 
-    console.log("req.file", req.file);
-    let username = "username-test";
-    let title = "title-test";
-    let description = "description-test";
-
-    db.insertImage(filePath, username, title, description)
+    db.insertImage(
+        filePath,
+        req.body.username,
+        req.body.title,
+        req.body.description
+    )
         .then((results) => {
             console.log("inserting new image worked, info is", results.rows);
-
             // send response back to Vue once we know that the INSERT was successfull
             res.json({
                 success: true,
                 message: "File uploaded successfully",
-                file: results.rows[0], //TO CHECK
+                uploadedFile: results.rows[0],
             });
 
             //after the response above is sent, we are back in app.js (Vue) -> the .then() part of the fetch request will run
@@ -58,6 +70,12 @@ app.post("/upload", uploader.single("photo"), s3.upload, (req, res) => {
         });
 
     // req.file ? res.json({ success: true }) : res.json({ success: false });
+});
+
+//put this at the end so it doesn't block other routes
+app.get("*", (req, res) => {
+    //we user render when we
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.listen(PORT, () => console.log(`I'm listening on port ${PORT}`));

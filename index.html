@@ -12,6 +12,7 @@
     </head>
     <body>
         <main>
+            <div id="container">
         <h1>The image bazaar</h1>
 
     <form
@@ -30,22 +31,22 @@
             <label for="username">Username</label>
             <input type="text" v-model.trim="username" name="username" id="username" /></div>
             <label for="photo">Please select your image</label>
-            <input type="file" accept="image/*" name="photo" id="photo" @change="onFormSubmit"/>
+            <input type="file" accept="image/*" name="photo" id="photo" @change="getFile" />
         </div>
         <input type="submit" value="Upload!" class="btn-submit"  />
     </form>
 <!-- show the status message -->
     <div class="status">{{ message }}</div>
+    </div>
         <p>Latest results:</p>
             <div id="results-grid">
                 <div class="image"
                      v-for="image in images">
-                     <img v-bind:src="image.url" v-bind:alt="image.title">
-                <div>{{image.title}}</div>
-                <div>{{image.description}}</div>
-                <div>Uploaded by {{image.username}} on {{cleanDate(image.created_at) }}</div>
+                     <img v-bind:src="image.url" v-bind:alt="image.title" @click="this.imageId=image.id"/>
+                <div class="img-description">{{image.title}}</div>
                 </div>
             </div>
+            <modal-component v-if="imageId" :id="imageId"  @close-modal="closeModalInApp"></modal-component>
         </main>
         <!-- using local build so not necessary <script src="https://unpkg.com/vue@3"></script> -->
         <script

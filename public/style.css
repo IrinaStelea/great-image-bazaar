@@ -16,9 +16,20 @@ body {
 main {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 3vh;
-    margin-top: 2vh;
+    width: 100%;
+}
+
+#container {
+    background-color: peachpuff;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    align-items: center;
+    gap: 3vh;
+    padding-top: 2vh;
+    width: 100%;
 }
 
 p {
@@ -34,8 +45,8 @@ h1 {
 #results-grid {
     display: grid;
     width: 90vw;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 3vw;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1vw;
     /* make sure rows stay the same height in mobile view */
     grid-auto-rows: 1fr;
 }
@@ -54,11 +65,12 @@ h1 {
 }
 
 .image {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     align-items: flex-start;
-    border: 1px solid black;
-    gap: 1vh;
+    /* border: 1px solid black; */
+    /* gap: 1vh; */
+    position: relative;
 }
 
 .btn-submit {
@@ -74,6 +86,44 @@ h1 {
     object-fit: cover;
     width: 100%;
     height: 100%;
+}
+
+.img-description {
+    position: absolute;
+    bottom: 1vw;
+    left: 1vw;
+    color: snow;
+}
+
+.modal {
+    width: 50vw;
+    background-color: black;
+    position: fixed;
+    align-self: center;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    padding: 1%;
+    color: snow;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+#close-modal {
+    align-self: flex-end;
+    padding-bottom: 3%;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.modal > img {
+    object-fit: cover;
+    width: 100%;
+}
+
+.modal-date-username {
+    font-size: 0.8em;
 }
 
 @media screen and (min-width: 320px) and (max-width: 768px) {

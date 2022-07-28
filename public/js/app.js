@@ -1,4 +1,5 @@
 import * as Vue from "./vue.js";
+import modalcomponent from "./modal.js";
 
 Vue.createApp({
     data() {
@@ -8,37 +9,46 @@ Vue.createApp({
             title: "",
             username: "",
             description: "",
+            file: null,
+            imageId: 0,
         };
+    },
+    components: {
+        "modal-component": modalcomponent,
     },
     methods: {
         cleanDate(date) {
             return date.slice(0, 10).split("-").reverse().join("-");
         },
-        //using Vueto get notified when the user tries to submit an empty form as well as to require validation
-        onFormSubmit(e) {
+
+        //using Vue to get notified when the user tries to submit without a file as well as to require validation
+        getFile(e) {
+            this.file = e.target.files[0];
+            console.log("this file", this.file);
+            // console.log("type of myfile", typeof myFile);
+        },
+        onFormSubmit() {
             console.log("form trying to submit!");
-            // validation!
-            // console.log("file", this.file);
-            // const form = e.currentTarget;
-            // const fileInput = form.querySelector("input[type=file]");
-            // console.log(fileInput.files);
 
-            let file = e.target.files;
-            console.log("file", file);
+            // TO DO: validate & sanitise form info
 
-            // if (HTMLInputElement.files.length < 1) {
-            //     alert("You must add a file!");
-            //     return;
-            // }
+            if (!this.file) {
+                alert("You must add a file!");
+                return;
+            }
 
-            // really submit the form!
+            // submit the form
             const formData = new FormData();
+            formData.append("file", this.file);
+            // // console.log("form data: 	", formData);
             formData.append("title", this.title);
             formData.append("description", this.description);
             formData.append("username", this.username);
-            formData.append("file", file);
 
-            console.log("form data: 	", formData);
+            // for (var [key, value] of formData.entries()) {
+            //     console.log("key, value", key, value);
+            // }
+
             fetch("/upload", {
                 method: "post",
                 body: formData,
@@ -47,14 +57,24 @@ Vue.createApp({
                 .then((serverData) => {
                     console.log("server data", serverData); //this is the res.json we define in the post /upload route
 
-                    // update the view!
+                    //reset the form values:
+                    this.title = "";
+                    this.description = "";
+                    this.username = "";
+                    this.file = null;
+
                     // change the value of message
                     this.message = serverData.message;
+
                     // if there is an image, add it to the list in data!
-                    if (serverData.file) {
-                        this.images.unshift(serverData.file);
+                    if (serverData.uploadedFile) {
+                        this.images.unshift(serverData.uploadedFile);
                     }
                 });
+        },
+        closeModalInApp() {
+            console.log("close fn in the parent is running!");
+            this.imageId = 0;
         },
     },
     //run this when the Vue lifecycle MOUNTED event happens

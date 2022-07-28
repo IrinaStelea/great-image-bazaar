@@ -1,3 +1,35 @@
 validation filetype images via multer
 
 check and sanitise user input
+
+how does a method in a component work? -> see error from the function that sanitises the data
+
+
+v-bind:id="imageId" v-if="modalOnOff"
+
+
+in create app, data, after imageId
+modalOnOff: null,
+
+
+
+<p id="modal-x" @click="closeModal"> X </p>
+            <img v-bind:src="imageInfo.url" width="50">
+            <p id="modal-title">{{imageInfo.title}}</p>
+            <p id="modal-description">{{imageInfo.description}}</p>
+            <p id="modal-username">Uploaded by {{imageInfo.username}} on {{imageData}} </p>
+
+
+
+<div class="imgCardBig" @click.self="closeImgCardBig">
+        <div class="imgPhoto">
+            <img v-bind:src="image.url" id="modalImage" id="bigImg">
+            <span class="imgClose" @click="closeImgCardBig">X</span>
+        </div>
+        <div class="imgInfo">
+            <p class="imgTitle"> {{img.title}} </p>
+            <p class="imgDescription"> {{img.description}} </p>
+            <p class="imgUser">by {{img.username}} </p>
+            <p class="imgTime"> {{img.created_at}} </p>
+        </div>
+    </div>

@@ -29,3 +29,9 @@ module.exports.uploader = multer({
         fileSize: 2097152,
     },
 });
+
+// module.exports.uploadFiles = (req, res) => {
+//     console.log("req.body", req.body);
+//     console.log("req.files", req.files);
+//     res.json({ message: "Successfully uploaded files" });
+// };
