@@ -33,6 +33,17 @@ app.get("/image/:id", (req, res) => {
         });
 });
 
+app.get("/more/:id", (req, res) => {
+    let lastId = req.params.id;
+    console.log("last id in get request", lastId);
+    db.getMoreImages(lastId)
+        .then((result) => {
+            res.json(result.rows);
+            console.log("next round of images is", result.rows);
+        })
+        .catch((err) => console.log("error in get next images", err));
+});
+
 //post for uploading images
 //Note the middleware sequence: calling the upload function after the multer uploader because we depend on that file
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {

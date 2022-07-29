@@ -16,12 +16,12 @@ body {
 main {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 3vh;
-    width: 100%;
+    margin-top: 2vh;
 }
 
-#container {
+/* #container {
     background-color: peachpuff;
     display: flex;
     flex-direction: column;
@@ -30,7 +30,7 @@ main {
     gap: 3vh;
     padding-top: 2vh;
     width: 100%;
-}
+} */
 
 p {
     font-size: 1.5em;
@@ -56,12 +56,19 @@ h1 {
     flex-direction: column;
     align-items: flex-start;
     gap: 1vh;
+    margin-top: 1vh;
 }
 
 .form-row {
-    display: flex;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: repeat(4, 0.75fr);
     gap: 1vh;
+}
+
+.form-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .image {

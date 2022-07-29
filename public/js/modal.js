@@ -13,8 +13,9 @@ const modalcomponent = {
             .then((result) => result.json())
             .then((imgInfo) => {
                 console.log("imgInfo ", imgInfo[0]);
-                //pass the info to the data object here
+                //pass the info to the data object in the modal
                 this.modalImage = imgInfo[0];
+                //clean the date
                 this.modalImage.created_at = imgInfo[0].created_at
                     .slice(0, 10)
                     .split("-")
@@ -24,6 +25,11 @@ const modalcomponent = {
     },
 
     methods: {
+        cleanDateModal(date) {
+            console.log("date", date);
+            return date.slice(0, 10).split("-").reverse().join("-");
+        },
+
         closeModalInComponent: function () {
             // console.log("closeModal fn in component is running");
             console.log("about to emit an event from the component!");
@@ -38,6 +44,7 @@ const modalcomponent = {
         <p class="modal-title">{{modalImage.title}}</p>
             <p class="modal-description">{{modalImage.description}}</p>
             <p class="modal-date-username">Uploaded by {{modalImage.username}} on {{modalImage.created_at}} </p>
+            
         </div>
     `,
 };

@@ -11,6 +11,8 @@ Vue.createApp({
             description: "",
             file: null,
             imageId: 0,
+            lastImageId: null,
+            lowestImageId: null,
         };
     },
     components: {
@@ -76,6 +78,42 @@ Vue.createApp({
             console.log("close fn in the parent is running!");
             this.imageId = 0;
         },
+        getNextImages() {
+            window.onscroll = () => {
+                if (
+                    document.documentElement.scrollTop + window.innerHeight >
+                    document.documentElement.offsetHeight
+                ) {
+                    console.log(
+                        "the user scrolled, last image id is",
+                        this.lastImageId
+                    );
+                    //get the id of the last image on the page
+                    // this.lastImageId = Math.min(
+                    //     ...this.images.map((item) => item.id)
+                    // );
+                    // console.log("lastimageID: 	", this.lastImageId);
+                    //fetch request;
+                    if (this.lowestImageId !== this.lastImageId) {
+                        console.log("inside the fetch request");
+                        fetch(`/more/${this.lastImageId}`)
+                            .then((result) => result.json())
+                            .then((nextImages) => {
+                                console.log("next images", nextImages);
+                                //add next round of images to the array
+                                for (let image of nextImages) {
+                                    this.images.push(image);
+                                }
+                                //update lowest imageId
+                                this.lowestImageId = nextImages[0].lowestId;
+                                this.lastImageId = Math.min(
+                                    ...this.images.map((item) => item.id)
+                                );
+                            });
+                    }
+                }
+            };
+        },
     },
     //run this when the Vue lifecycle MOUNTED event happens
     mounted() {
@@ -86,6 +124,12 @@ Vue.createApp({
                 console.log("get images results", imagesArray);
                 // Vue understands 'this.images' above refers to the DATA's property named 'images'.
                 this.images = imagesArray;
+                this.lastImageId = Math.min(
+                    ...this.images.map((item) => item.id)
+                );
+                console.log("lastimageID: 	", this.lastImageId);
             });
+
+        this.getNextImages();
     },
 }).mount("main"); //what's inside mount needs to refer to the selector

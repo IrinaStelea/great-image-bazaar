@@ -12,7 +12,6 @@
     </head>
     <body>
         <main>
-            <div id="container">
         <h1>The image bazaar</h1>
 
     <form
@@ -22,28 +21,32 @@
         @submit.prevent="onFormSubmit" >
 
         <div class="form-upload">
-            <p>Upload your image<p></p>
             <div class="form-row">
+                <div class="form-entry">
             <label for="title">Title</label>
-            <input type="text" v-model.trim="title" name="title" id="title" />
+            <input type="text" v-model.trim="title" name="title" id="title" /></div>
+            <div class="form-entry">
             <label for="description">Description</label>
-            <input type="text" v-model.trim="description" name="description" id="description" />
+            <input type="text" v-model.trim="description" name="description" id="description" /></div>
+            <div class="form-entry">
             <label for="username">Username</label>
             <input type="text" v-model.trim="username" name="username" id="username" /></div>
+            <div class="form-entry">
             <label for="photo">Please select your image</label>
-            <input type="file" accept="image/*" name="photo" id="photo" @change="getFile" />
-        </div>
+            <input type="file" accept="image/*" name="photo" id="photo" @change="getFile" /></div>
+        </div></div>
         <input type="submit" value="Upload!" class="btn-submit"  />
     </form>
 <!-- show the status message -->
     <div class="status">{{ message }}</div>
-    </div>
+    
         <p>Latest results:</p>
             <div id="results-grid">
                 <div class="image"
                      v-for="image in images">
                      <img v-bind:src="image.url" v-bind:alt="image.title" @click="this.imageId=image.id"/>
-                <div class="img-description">{{image.title}}</div>
+                <div class="img-description">{{image.title}}
+                </div>
                 </div>
             </div>
             <modal-component v-if="imageId" :id="imageId"  @close-modal="closeModalInApp"></modal-component>
