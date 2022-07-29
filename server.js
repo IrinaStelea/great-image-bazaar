@@ -35,13 +35,26 @@ app.get("/image/:id", (req, res) => {
 
 app.get("/more/:id", (req, res) => {
     let lastId = req.params.id;
-    console.log("last id in get request", lastId);
+    // console.log("last id in get request", lastId);
     db.getMoreImages(lastId)
         .then((result) => {
             res.json(result.rows);
-            console.log("next round of images is", result.rows);
+            // console.log("next round of images is", result.rows);
         })
         .catch((err) => console.log("error in get next images", err));
+});
+
+app.get("/comments/:id", (req, res) => {
+    let id = req.params.id;
+    db.getCommentsById(id)
+        .then((result) => {
+            // console.log(result.rows);
+            //send response back as json for the fetch
+            return res.json(result.rows);
+        })
+        .catch((err) => {
+            console.log("error in getCommentsById", err);
+        });
 });
 
 //post for uploading images
@@ -81,6 +94,20 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         });
 
     // req.file ? res.json({ success: true }) : res.json({ success: false });
+});
+
+//post for the comments
+app.post("/comment", (req, res) => {
+    console.log("req body is", req.body);
+    db.insertComment(req.body.id, req.body.username, req.body.comment)
+        .then((results) => {
+            console.log("inserting new comment worked, info is", results.rows);
+            // send inserted commented back to Vue
+            res.json({
+                newComment: results.rows[0],
+            });
+        })
+        .catch((err) => console.log("error in inserting new comment", err));
 });
 
 //put this at the end so it doesn't block other routes

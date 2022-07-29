@@ -1,8 +1,14 @@
+import commentcomponent from "./comment.js";
+
 const modalcomponent = {
     data() {
         return {
             modalImage: {},
+            //no need to add the id prop here for use in the comment component
         };
+    },
+    components: {
+        "comment-component": commentcomponent,
     },
     props: ["id"], //props array allows to get access to the info being passed down by the parent
     mounted() {
@@ -43,8 +49,8 @@ const modalcomponent = {
         <img id="modal-image" v-bind:src="modalImage.url" v-bind:alt="modalImage.title"/>
         <p class="modal-title">{{modalImage.title}}</p>
             <p class="modal-description">{{modalImage.description}}</p>
-            <p class="modal-date-username">Uploaded by {{modalImage.username}} on {{modalImage.created_at}} </p>
-            
+            <p id="detail-component">Uploaded by {{modalImage.username}} on {{modalImage.created_at}} </p>
+            <comment-component :commentId="id"></comment-component>
         </div>
     `,
 };

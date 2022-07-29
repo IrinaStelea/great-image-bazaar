@@ -11,6 +11,8 @@ resize the menu for mobile (hamburger menu)
 
 v-bind:id="imageId" v-if="modalOnOff"
 
+black overlay for comments box
+
 
 window.onscroll = () => {
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
@@ -55,4 +57,12 @@ setInterval(() => {
                     return window.onscroll;
                 }
             }
+
+
+ALTER TABLE comments
+DROP CONSTRAINT "comments_image_id_key",
+ADD CONSTRAINT "comments_image_id_fkey"
+  FOREIGN KEY (image_id) 
+  REFERENCES images(id)
+  ON DELETE CASCADE;
 

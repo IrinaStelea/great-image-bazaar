@@ -36,3 +36,18 @@ module.exports.insertImage = (url, username, title, description) => {
         [url, username, title, description]
     );
 };
+
+module.exports.insertComment = (id, username, comment) => {
+    return db.query(
+        `INSERT INTO comments(image_id, username, comment)
+            VALUES ($1, $2, $3) RETURNING *`,
+        [id, username, comment]
+    );
+};
+
+module.exports.getCommentsById = (id) => {
+    return db.query(
+        `SELECT * FROM comments WHERE image_id=$1 ORDER BY created_at DESC`,
+        [id]
+    );
+};
