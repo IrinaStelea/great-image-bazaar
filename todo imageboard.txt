@@ -6,63 +6,11 @@ how does a method in a component work? -> see error from the function that sanit
 
 resize the menu for mobile (hamburger menu)
 
-<comment-component></comment-component>
-
-
-v-bind:id="imageId" v-if="modalOnOff"
-
 black overlay for comments box
 
-
-window.onscroll = () => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-        if (bottomOfWindow) {
-          axios.get(`https://randomuser.me/api/`).then(response => {
-            this.users.push(response.data.results[0]);
-          });
-        }
-      }
-
-
-function checkScroll() {
-timer = setTimeout(function () {
-            if (document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight) {
-                // fetch request here;
-            } else {
-                checkScroll();
-            }
-        }, 750);
-
-}
+adauga if pentru Recent comments title
 
 
 
-function checkScroll() {
-setInterval(() => {
-            if(window.scrollMaxY - window.scrollY > 1000){
-                 //fetch request;
-            }
-       }, 2000);
 
-}
-
-
-
-         for (let item of this.images) {
-                if (this.lowestImageId === item.id) {
-                    console.log("lowest image id is among the images");
-                    return;
-                } else {
-                    console.log("else of the check");
-                    return window.onscroll;
-                }
-            }
-
-
-ALTER TABLE comments
-DROP CONSTRAINT "comments_image_id_key",
-ADD CONSTRAINT "comments_image_id_fkey"
-  FOREIGN KEY (image_id) 
-  REFERENCES images(id)
-  ON DELETE CASCADE;
 

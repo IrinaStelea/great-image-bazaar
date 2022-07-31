@@ -31,7 +31,7 @@ const modalcomponent = {
     },
 
     methods: {
-        cleanDateModal(date) {
+        cleanDate(date) {
             console.log("date", date);
             return date.slice(0, 10).split("-").reverse().join("-");
         },

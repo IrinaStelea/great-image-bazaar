@@ -5,15 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
        <link rel="preconnect" href="https://fonts.googleapis.com"> 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&family=Work+Sans:wght@300;400;500;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
         
         <title>Imageboard</title>
     </head>
     <body>
         <main>
+            <div class="container">
         <h1>IMAGE BAZAAR</h1>
-
+<p>Upload your image</p>
     <form
         action="/upload"
         method="post"
@@ -23,24 +24,22 @@
         <div class="form-upload">
             <div class="form-row">
                 <div class="form-entry">
-            <label for="title">Title</label>
-            <input type="text" v-model.trim="title" name="title" id="title" /></div>
+            <input type="text" v-model.trim="title" name="title" id="title" placeholder=" " /><label for="title">Title*</label></div>
             <div class="form-entry">
-            <label for="description">Description</label>
-            <input type="text" v-model.trim="description" name="description" id="description" /></div>
+            <input type="text" v-model.trim="description" name="description" id="description" placeholder=" " /><label for="description">Description</label></div>
             <div class="form-entry">
-            <label for="username">Username</label>
-            <input type="text" v-model.trim="username" name="username" id="username" /></div>
-            <div class="form-entry">
-            <label for="photo">Please select your image</label>
-            <input type="file" accept="image/*" name="photo" id="photo" @change="getFile" /></div>
+            <input type="text" v-model.trim="username" name="username" id="username" placeholder=" "/><label for="username">Username*</label></div>
+            <div class="form-entry-file">
+            <input type="file" accept="image/*" name="photo" id="photo" @change="getFile" /><label for="photo"></label></div>
         </div></div>
-        <input type="submit" value="Upload!" class="btn-submit"  />
+        <input type="submit" value="Upload" class="btn-submit"  />
     </form>
 <!-- show the status message -->
     <div class="status">{{ message }}</div>
     
+    
         <p>Latest results:</p>
+        </div>
             <div id="results-grid">
                 <div class="image"
                      v-for="image in images">

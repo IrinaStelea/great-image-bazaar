@@ -2,33 +2,57 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: "Open Sans", sans-serif;
 }
 
 body {
-    background-color: seashell;
+    background-color: snow;
     width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: "Work Sans", sans-serif;
 }
 
 main {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 0.5vh;
+    margin-top: 2vh;
+    width: 90vw;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
     align-items: flex-start;
     gap: 3vh;
-    margin-top: 2vh;
 }
 
 p {
-    font-size: 1.5em;
-    font-weight: 300;
+    font-size: 1em;
+    font-weight: 500;
 }
 
 h1 {
-    font-family: "Montserrat Subrayada", sans-serif;
-    font-size: 3em;
+    font-family: "Open Sans", sans-serif;
+    letter-spacing: 0.1em;
+    font-size: 4em;
+    font-weight: 700;
+    background-image: linear-gradient(
+        to right,
+        gold,
+        coral,
+        cornflowerblue,
+        mediumspringgreen
+    );
+    -webkit-background-clip: text;
+    /* background-clip: text; */
+    color: transparent;
+    background-size: 300%;
+    background-position: -100%;
+    animation: animatedH1 5s infinite alternate-reverse;
 }
 
 #results-grid {
@@ -50,14 +74,43 @@ h1 {
 
 .form-row {
     display: grid;
-    grid-template-columns: repeat(4, 0.75fr);
-    gap: 1vh;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2vw;
 }
 
 .form-entry {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    position: relative;
+}
+
+.form-upload label {
+    position: absolute;
+    left: 0;
+    cursor: text;
+    transform-origin: 0 0;
+    transition: transform 0.1s ease-in-out, color 0.1s ease-in-out;
+}
+
+.form-upload input {
+    outline: none;
+    border: none;
+    background-color: unset;
+    border-bottom: 0.5px solid black;
+    font-size: 1em;
+    font-family: "Open Sans", sans-serif;
+}
+
+.form-upload input:focus + label,
+input:not(:placeholder-shown) + label {
+    color: rgb(109, 102, 96);
+    transform: translateY(-1.2em) scale(0.8);
+}
+
+#photo {
+    border: none;
+    font-size: 0.9em;
 }
 
 .image {
@@ -70,10 +123,11 @@ h1 {
 }
 
 .btn-submit {
-    margin-top: 2vh;
-    background-color: aquamarine;
-    font-size: 1.2em;
-    padding: 1vh;
+    margin-top: 3vh;
+    background-color: lightgrey;
+    font-size: 1em;
+    font-weight: bolder;
+    padding: 1vh 4vw;
     border: 3px solid transparent;
     border-radius: 50px;
 }
@@ -143,8 +197,23 @@ h1 {
     color: gray;
 }
 
-@media screen and (min-width: 320px) and (max-width: 768px) {
+@keyframes animatedH1 {
+    to {
+        background-position: 100%;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 1024px) {
     #results-grid {
         grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: repeat(auto-fill, minmax(177px, 1fr));
+        gap: 3vh;
+    }
+
+    h1 {
+        font-size: 3em;
     }
 }
