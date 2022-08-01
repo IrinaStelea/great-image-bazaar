@@ -6,6 +6,7 @@ Vue.createApp({
         return {
             images: [],
             message: "",
+            error: "",
             title: "",
             username: "",
             description: "",
@@ -14,6 +15,7 @@ Vue.createApp({
             lastImageId: null,
             lowestImageId: null,
             timer: null,
+            hoverTarget: null,
         };
     },
     components: {
@@ -35,9 +37,23 @@ Vue.createApp({
 
             // TO DO: validate & sanitise form info
 
-            if (!this.file) {
-                alert("You must add a file!");
+            if (!this.title) {
+                this.error = "Please add a title for your image";
                 return;
+            }
+
+            if (!this.username) {
+                this.error = "Please add your username";
+                return;
+            }
+
+            if (!this.file) {
+                this.error = "Please add an image";
+                return;
+            }
+
+            if (this.title && this.username) {
+                this.error = "";
             }
 
             // submit the form
@@ -65,6 +81,7 @@ Vue.createApp({
                     this.description = "";
                     this.username = "";
                     this.file = null;
+                    this.error = "";
 
                     // change the value of message
                     this.message = serverData.message;

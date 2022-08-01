@@ -55,10 +55,13 @@ const commentcomponent = {
         
         <div class="comment-form">
          <div class="comment-fields">
-            <input type="text" v-model.trim="username" name="username" id="username" placeholder="Your username" />
-            <input type="textarea" v-model.trim="comment" name="comment" id="comment" placeholder="Your comment" />
+            <input type="text" v-model.trim="username" name="username" id="username" placeholder=" " />
+            <label for="username">Username*</label>
+            <div class="comment-fields"></div>
+            <input type="text" v-model.trim="comment" name="comment" id="comment" placeholder=" " />
+            <label for="comment">Comment</label>
             </div>
-            <input type="submit" value="Submit comment" class="comment-submit" @click="onCommentSubmit" /></div>
+            <input type="submit" value="Submit comment" class="btn-submit" id="comment-submit" @click="onCommentSubmit" /></div>
             <h4> Recent comments: </h4>
             <div class="comments" v-for="comment in comments">
             

@@ -37,7 +37,7 @@ p {
 
 h1 {
     font-family: "Open Sans", sans-serif;
-    letter-spacing: 0.1em;
+    /* letter-spacing: 0.1em; */
     font-size: 4em;
     font-weight: 700;
     background-image: linear-gradient(
@@ -53,15 +53,6 @@ h1 {
     background-size: 300%;
     background-position: -100%;
     animation: animatedH1 5s infinite alternate-reverse;
-}
-
-#results-grid {
-    display: grid;
-    width: 90vw;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1vw;
-    /* make sure rows stay the same height in mobile view */
-    grid-auto-rows: 1fr;
 }
 
 .form-upload {
@@ -85,7 +76,8 @@ h1 {
     position: relative;
 }
 
-.form-upload label {
+/* .form-upload label */
+label {
     position: absolute;
     left: 0;
     cursor: text;
@@ -93,7 +85,8 @@ h1 {
     transition: transform 0.1s ease-in-out, color 0.1s ease-in-out;
 }
 
-.form-upload input {
+/* .form-upload input { */
+input {
     outline: none;
     border: none;
     background-color: unset;
@@ -102,7 +95,8 @@ h1 {
     font-family: "Open Sans", sans-serif;
 }
 
-.form-upload input:focus + label,
+/* .form-upload input:focus + label, */
+input:focus + label,
 input:not(:placeholder-shown) + label {
     color: rgb(109, 102, 96);
     transform: translateY(-1.2em) scale(0.8);
@@ -113,13 +107,33 @@ input:not(:placeholder-shown) + label {
     font-size: 0.9em;
 }
 
+#results-grid {
+    display: grid;
+    width: 90vw;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.2vw;
+    /* make sure rows stay the same height in mobile view */
+    grid-auto-rows: 30vw;
+}
+
 .image {
-    /* display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    /* border: 1px solid black; */
-    /* gap: 1vh; */
     position: relative;
+}
+
+.image > img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.status {
+    font-style: italic;
+    color: slategray;
+}
+
+.error {
+    font-style: italic;
+    color: tomato;
 }
 
 .btn-submit {
@@ -132,10 +146,13 @@ input:not(:placeholder-shown) + label {
     border-radius: 50px;
 }
 
-.image > img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
+.btn-submit:hover {
+    background-color: lightsteelblue;
+}
+
+.btn-submit:active {
+    background-color: slategray;
+    color: snow;
 }
 
 .img-description {
@@ -143,69 +160,103 @@ input:not(:placeholder-shown) + label {
     bottom: 1vw;
     left: 1vw;
     color: snow;
+    text-shadow: 1px 1px 1px #000;
 }
 
 .modal {
-    max-width: 50vw;
-    background-color: white;
+    /* max-width: 50vw; */
+    /* max-height: 90vh; */
+    max-width: calc(100% - 80px);
+    max-height: calc(100% - 80px);
+    background-color: snow;
     position: fixed;
     align-self: center;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* top: 50%;
+    transform: translateY(-50%); */
     z-index: 100;
-    padding: 1%;
+    padding: 0.5vw;
     color: black;
-    display: flex;
-    flex-direction: column;
     /* flex-wrap: wrap; */
 }
 
-#close-modal {
-    align-self: flex-end;
-    padding-bottom: 3%;
-    opacity: 0.5;
-    cursor: pointer;
+.modal-image-container {
+    position: relative;
 }
 
-.modal > img {
+#modal-image {
     object-fit: contain;
     width: 100%;
     height: 100%;
 }
-
-.modal-date-username {
-    font-size: 0.8em;
+.modal-content {
+    overflow: auto;
+    max-height: calc(100vh - 125px);
+    display: flex;
+    flex-direction: column;
 }
+
+#close-modal {
+    align-self: flex-end;
+    padding-bottom: 2%;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.modal-description {
+    font-size: 0.8em;
+    margin-left: 1vw;
+}
+
+#detail-component {
+    margin-left: 1vw;
+    font-size: 0.8em;
+    color: gray;
+}
+
 .comment {
     margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+    margin-left: 1vw;
 }
 
-.comment-form input {
-    margin-right: 20px;
+.comment-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
+
+.comment-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1vw;
+    position: relative;
+}
+
+/* .comment-form input {
+    margin-right: 20px;
+} */
 
 .comments > p {
     font-size: 1em;
 }
 
-#detail-component {
-    font-size: 0.8em;
-    color: gray;
-}
-
-@keyframes animatedH1 {
+/* @keyframes animatedH1 {
     to {
         background-position: 100%;
     }
-}
+} */
 
 @media screen and (min-width: 320px) and (max-width: 1024px) {
     #results-grid {
         grid-template-columns: 1fr;
+        /* make sure rows stay the same height in mobile view */
+        grid-auto-rows: 90vh;
     }
 
     .form-row {
@@ -217,3 +268,15 @@ input:not(:placeholder-shown) + label {
         font-size: 3em;
     }
 }
+
+/* @media screen and (orientation: portrait) {
+    .modal > img {
+        max-width: 50%;
+    }
+}
+
+@media screen and (orientation: landscape) {
+    .modal > img {
+        max-height: 50%;
+    }
+} */

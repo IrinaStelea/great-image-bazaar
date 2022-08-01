@@ -45,12 +45,15 @@ const modalcomponent = {
     },
     template: `
         <div class="modal">
-        <h3 id="close-modal" @click="closeModalInComponent"> X </h3>
+        <div class="modal-content">
+        <h4 id="close-modal" @click="closeModalInComponent"> X </h4>
+        <div class="modal-image-container">
         <img id="modal-image" v-bind:src="modalImage.url" v-bind:alt="modalImage.title"/>
-        <p class="modal-title">{{modalImage.title}}</p>
+        <p class="img-description">{{modalImage.title}}</p></div>
             <p class="modal-description">{{modalImage.description}}</p>
             <p id="detail-component">Uploaded by {{modalImage.username}} on {{modalImage.created_at}} </p>
             <comment-component :commentId="id"></comment-component>
+            </div>
         </div>
     `,
 };

@@ -8,12 +8,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
         
-        <title>Imageboard</title>
+        <title>The great image bazaar</title>
     </head>
     <body>
         <main>
             <div class="container">
-        <h1>IMAGE BAZAAR</h1>
+        <h1>The great image bazaar</h1>
 <p>Upload your image</p>
     <form
         action="/upload"
@@ -35,16 +35,17 @@
         <input type="submit" value="Upload" class="btn-submit"  />
     </form>
 <!-- show the status message -->
-    <div class="status">{{ message }}</div>
-    
+<span class="error">{{ error }}</span>
+    <span class="status">{{ message }}</span>
     
         <p>Latest results:</p>
         </div>
             <div id="results-grid">
-                <div class="image"
-                     v-for="image in images">
-                     <img v-bind:src="image.url" v-bind:alt="image.title" @click="this.imageId=image.id"/>
-                <div class="img-description">{{image.title}}
+                <div class="image" 
+                     v-for="image in images" >
+                     <img v-bind:src="image.url" v-bind:alt="image.title" @click="this.imageId=image.id" @mouseover="hoverTarget = image.id"
+      @mouseleave="hoverTarget = null"/>
+                <div class="img-description" v-if="hoverTarget === image.id">{{image.title}}
                 </div>
                 </div>
             </div>
