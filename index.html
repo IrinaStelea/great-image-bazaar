@@ -28,30 +28,30 @@
             <div class="form-entry">
             <input type="text" v-model.trim="description" name="description" id="description" placeholder=" " /><label for="description">Description</label></div>
             <div class="form-entry">
-            <input type="text" v-model.trim="username" name="username" id="username" placeholder=" "/><label for="username">Username*</label></div>
+            <input type="text" v-model.trim="username" name="username" id="username" placeholder=" " /><label for="username">Username*</label></div>
             <div class="form-entry-file">
-            <input type="file" accept="image/*" name="photo" id="photo" @change="getFile" /><label for="photo"></label></div>
+            <input type="file" ref="inputfile" accept="image/*" name="photo" id="photo" @change="getFile" /><label for="photo"></label></div>
         </div></div>
         <input type="submit" value="Upload" class="btn-submit"  />
     </form>
 <!-- show the status message -->
-<span class="error">{{ error }}</span>
-    <span class="status">{{ message }}</span>
+<span class="error">{{ error }} </span>
+    <span class="status">{{ message }} </span>
     
         <p>Latest results:</p>
         </div>
             <div id="results-grid">
                 <div class="image" 
                      v-for="image in images" >
-                     <img v-bind:src="image.url" v-bind:alt="image.title" @click="this.imageId=image.id" @mouseover="hoverTarget = image.id"
-      @mouseleave="hoverTarget = null"/>
+                     <img v-bind:src="image.url" v-bind:alt="image.title" @click="() => {this.imageId=image.id; updateLocation();}" @mouseover="hoverTarget = image.id" @mouseleave="hoverTarget = null"/>
                 <div class="img-description" v-if="hoverTarget === image.id">{{image.title}}
                 </div>
                 </div>
             </div>
-            <modal-component v-if="imageId" :id="imageId"  @close-modal="closeModalInApp"></modal-component>
+            <modal-component v-if="imageId" :id="imageId"  @close-modal="closeModalInApp" @delete-image="deleteImage"></modal-component>
         </main>
         <!-- using local build so not necessary <script src="https://unpkg.com/vue@3"></script> -->
+        
         <script
             src="/js/app.js"
             type="module"

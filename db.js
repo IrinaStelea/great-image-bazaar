@@ -17,8 +17,12 @@ module.exports.getImages = () => {
     // });
 };
 
+//getImagesById updated to include prev and next id
 module.exports.getImagesById = (id) => {
-    return db.query(`SELECT * FROM images WHERE id = '${id}'`);
+    // return db.query(`SELECT * FROM images WHERE id = '${id}'`);
+    return db.query(
+        `SELECT *, (SELECT id FROM images where id>${id} ORDER BY id LIMIT 1) AS "nextId", (SELECT id FROM images where id<${id} ORDER BY id DESC LIMIT 1) as "lastId" FROM images WHERE id = '${id}'`
+    );
 };
 
 module.exports.getMoreImages = (lastImageId) => {
@@ -35,6 +39,10 @@ module.exports.insertImage = (url, username, title, description) => {
             VALUES ($1, $2, $3, $4) RETURNING *`,
         [url, username, title, description]
     );
+};
+
+module.exports.deleteImage = (id) => {
+    return db.query(`DELETE FROM images WHERE id='${id}'`);
 };
 
 module.exports.insertComment = (id, username, comment) => {

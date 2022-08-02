@@ -24,7 +24,7 @@ app.get("/image/:id", (req, res) => {
     let id = req.params.id;
     db.getImagesById(id)
         .then((result) => {
-            // console.log(result.rows);
+            console.log("get images by Id w/ prev and next", result.rows);
             //send response back as json for the fetch
             return res.json(result.rows);
         })
@@ -38,7 +38,7 @@ app.get("/more/:id", (req, res) => {
     // console.log("last id in get request", lastId);
     db.getMoreImages(lastId)
         .then((result) => {
-            res.json(result.rows);
+            return res.json(result.rows);
             // console.log("next round of images is", result.rows);
         })
         .catch((err) => console.log("error in get next images", err));
@@ -110,9 +110,30 @@ app.post("/comment", (req, res) => {
         .catch((err) => console.log("error in inserting new comment", err));
 });
 
+//post for deleting images
+// /delete-image/${this.imageId}
+app.post("/delete-image/:id", (req, res) => {
+    let id = req.params.id;
+    db.deleteImage(id)
+        .then((result) => {
+            console.log("deleting image worked the resutls are", result);
+            //send response back as json for the fetch
+            res.json({
+                message: "Deleting the image was successful",
+                success: true,
+            });
+        })
+        .catch((err) => {
+            console.log("error in deleting image", err);
+            res.json({
+                success: false,
+            });
+        });
+});
+
 //put this at the end so it doesn't block other routes
 app.get("*", (req, res) => {
-    //we user render when we
+    //render the index.html for all routes
     res.sendFile(path.join(__dirname, "index.html"));
 });
 

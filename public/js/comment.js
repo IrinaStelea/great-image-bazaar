@@ -4,6 +4,8 @@ const commentcomponent = {
             comments: [],
             username: "",
             comment: "",
+            hasComments: false,
+            error: "",
         };
     },
     props: ["commentId"],
@@ -17,6 +19,9 @@ const commentcomponent = {
                 // Vue understands 'this.images' above refers to the DATA's property named 'images'.
                 this.comments = commentsArray;
             });
+        if (this.comments) {
+            this.hasComments = true;
+        }
     },
 
     methods: {
@@ -25,6 +30,11 @@ const commentcomponent = {
         },
         onCommentSubmit() {
             // TO DO: validate & sanitise comment data
+            if (!this.username) {
+                this.error = "Please add your username";
+                return;
+            }
+
             fetch("/comment", {
                 method: "post",
                 headers: {
@@ -43,6 +53,7 @@ const commentcomponent = {
                     //reset the comment form values:
                     this.username = "";
                     this.comment = "";
+                    this.error = "";
 
                     // comment should be displayed in the comment list immediately
                     this.comments.unshift(data.newComment);
@@ -51,20 +62,22 @@ const commentcomponent = {
     },
     template: `
         <div class="comment">
-        <h4> Add a comment </h4>
+
+        <span class="error" id="error-comment">{{ error }}</span>
+        <h5> Add a comment </h5>
         
         <div class="comment-form">
          <div class="comment-fields">
             <input type="text" v-model.trim="username" name="username" id="username" placeholder=" " />
-            <label for="username">Username*</label>
-            <div class="comment-fields"></div>
+            <label for="username">Username*</label></div>
+            <div class="comment-fields">
             <input type="text" v-model.trim="comment" name="comment" id="comment" placeholder=" " />
             <label for="comment">Comment</label>
             </div>
-            <input type="submit" value="Submit comment" class="btn-submit" id="comment-submit" @click="onCommentSubmit" /></div>
-            <h4> Recent comments: </h4>
+            <input type="submit" value="Submit comment" class="btn-submit" id="comment-submit" @click="onCommentSubmit" />
+            </div>
+            <h5 v-if="this.comments.length>0"> Recent comments: </h5>
             <div class="comments" v-for="comment in comments">
-            
                 <p>{{comment.comment}}</p>
                 <p id="detail-component">Posted by {{comment. username}} on {{cleanDate(comment.created_at)}}</p>
                 </div>
