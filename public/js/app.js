@@ -16,6 +16,7 @@ Vue.createApp({
             lowestImageId: null,
             timer: null,
             hoverTarget: null,
+            nextId: null,
         };
     },
     components: {
@@ -129,6 +130,14 @@ Vue.createApp({
             console.log("close fn in the parent is running!");
             this.imageId = 0;
             history.pushState(null, null, "/");
+        },
+        nextImage(value) {
+            console.log("value passed in emitter is", value);
+            this.imageId = value;
+        },
+        prevImage(value) {
+            console.log("value passed in emitter is", value);
+            this.imageId = value;
         },
         deleteImage() {
             if (confirm("Are you sure you want to delete the image?") == true) {

@@ -29,9 +29,14 @@ const commentcomponent = {
             return date.slice(0, 10).split("-").reverse().join("-");
         },
         onCommentSubmit() {
-            // TO DO: validate & sanitise comment data
             if (!this.username) {
                 this.error = "Please add your username";
+                return;
+            }
+
+            if (this.username.length > 35) {
+                this.error =
+                    "Please choose a username with up to 35 characters";
                 return;
             }
 

@@ -48,7 +48,7 @@
                 </div>
                 </div>
             </div>
-            <modal-component v-if="imageId" :id="imageId"  @close-modal="closeModalInApp" @delete-image="deleteImage"></modal-component>
+            <modal-component v-if="imageId" :id="imageId" @close-modal="closeModalInApp" @delete-image="deleteImage" @next="nextImage" @prev="prevImage"></modal-component>
         </main>
         <!-- using local build so not necessary <script src="https://unpkg.com/vue@3"></script> -->
         
