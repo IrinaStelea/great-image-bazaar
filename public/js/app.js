@@ -71,6 +71,7 @@ Vue.createApp({
                 this.error = "Please upload a valid image file";
                 return;
             }
+
             console.log("file extension", extension);
             if (
                 extension.toLowerCase() != ".gif" &&
