@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-       <link rel="preconnect" href="https://fonts.googleapis.com"> 
+        <link rel="preconnect" href="https://fonts.googleapis.com"> 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
-        
         <title>The great image bazaar</title>
     </head>
     <body>
@@ -19,7 +18,7 @@
         action="/upload"
         method="post"
         enctype="multipart/form-data"
-        @submit.prevent="onFormSubmit" >
+        @submit.prevent="submitForm" >
 
         <div class="form-upload">
             <div class="form-row">
@@ -30,20 +29,18 @@
             <div class="form-entry">
             <input type="text" v-model.trim="username" name="username" id="username" placeholder=" " /><label for="username">Username*</label></div>
             <div class="form-entry-file">
-            <input type="file" ref="inputfile" accept="image/*" name="photo" id="photo" @change="getFile" /><label for="photo"></label></div>
+            <input type="file" ref="inputfile" accept="image/*" name="photo" id="photo" @change="handleFileChange" /><label for="photo"></label></div>
         </div></div>
         <input type="submit" value="Upload" class="btn-submit"  />
     </form>
-<!-- show the status message -->
+<!-- show the error/status message -->
 <span class="error">{{ error }} </span>
     <span class="status">{{ message }} </span>
     
         <p>Latest results:</p>
         </div>
             <div id="results-grid">
-                <div class="image" 
-                     v-for="image in images" >
-                     <img v-bind:src="image.url" v-bind:alt="image.title" @click="() => {this.imageId=image.id; updateLocation();}" @mouseover="hoverTarget = image.id" @mouseleave="hoverTarget = null"/>
+                <div class="image" v-for="image in images" ><img v-bind:src="image.url" v-bind:alt="image.title" @click="() => {this.imageId=image.id; updateLocation();}" @mouseover="hoverTarget = image.id" @mouseleave="hoverTarget = null"/>
                 <div class="img-description" v-if="hoverTarget === image.id">{{image.title}}
                 </div>
                 </div>
@@ -51,7 +48,6 @@
             <modal-component v-if="imageId" :id="imageId" @close-modal="closeModalInApp" @delete-image="deleteImage" @next="nextImage" @prev="prevImage"></modal-component>
         </main>
         <!-- using local build so not necessary <script src="https://unpkg.com/vue@3"></script> -->
-        
         <script
             src="/js/app.js"
             type="module"

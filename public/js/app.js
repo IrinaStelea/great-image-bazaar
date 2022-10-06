@@ -26,34 +26,28 @@ Vue.createApp({
         cleanDate(date) {
             return date.slice(0, 10).split("-").reverse().join("-");
         },
-
-        //using Vue to get notified when the user tries to submit without a file as well as to require validation
-        getFile(e) {
+        handleFileChange(e) {
             this.file = e.target.files[0];
-            console.log("this file", this.file);
-            // console.log("type of myfile", typeof myFile);
         },
-        onFormSubmit() {
-            console.log("form trying to submit!");
-
+        submitForm() {
+            //form validation client-side
             if (!this.title) {
-                this.error = "Please add a title for your image";
+                this.error = "Please include a title for your image";
                 return;
             }
 
             if (this.title.length > 70) {
-                this.error = "Please choose a title with up to 70 characters";
+                this.error = "Image title must be max 70 characters long";
                 return;
             }
 
             if (!this.username) {
-                this.error = "Please add your username";
+                this.error = "Please include a username";
                 return;
             }
 
             if (this.username.length > 35) {
-                this.error =
-                    "Please choose a username with up to 35 characters";
+                this.error = "Username must be max 35 characters long";
                 return;
             }
 
@@ -62,7 +56,7 @@ Vue.createApp({
                 return;
             }
 
-            //check the file extension
+            //file type validation
             let extension = this.file.name.substr(
                 this.file.name.lastIndexOf(".")
             );
@@ -72,7 +66,6 @@ Vue.createApp({
                 return;
             }
 
-            console.log("file extension", extension);
             if (
                 extension.toLowerCase() != ".gif" &&
                 extension.toLowerCase() != ".jpg" &&
@@ -84,17 +77,12 @@ Vue.createApp({
                 return;
             }
 
-            // submit the form
+            // collect form info into FormData - title, description & username are collected via v-model
             const formData = new FormData();
             formData.append("file", this.file);
-            // // console.log("form data: 	", formData);
             formData.append("title", this.title);
             formData.append("description", this.description);
             formData.append("username", this.username);
-
-            // for (var [key, value] of formData.entries()) {
-            //     console.log("key, value", key, value);
-            // }
 
             fetch("/upload", {
                 method: "post",
@@ -102,42 +90,34 @@ Vue.createApp({
             })
                 .then((result) => result.json())
                 .then((serverData) => {
-                    console.log("server data", serverData); //this is the res.json we define in the post /upload route
-
-                    //reset the form values:
+                    //reset the form values
                     this.title = "";
                     this.description = "";
                     this.username = "";
                     this.file = null;
                     this.error = "";
-                    //reset the file input value shown on screen (note that it needs a ref in the html as well in order to work)
+
+                    //reset the file input value shown on screen
                     this.$refs.inputfile.value = null;
 
-                    // change the value of message
                     this.message = serverData.message;
-
-                    //clear the message after 2 seconds
                     setTimeout(() => {
                         this.message = "";
                     }, 2000);
 
-                    // if there is an image, add it to the list in data!
                     if (serverData.uploadedFile) {
                         this.images.unshift(serverData.uploadedFile);
                     }
                 });
         },
         closeModalInApp() {
-            console.log("close fn in the parent is running!");
             this.imageId = 0;
             history.pushState(null, null, "/");
         },
         nextImage(value) {
-            console.log("value passed in emitter is", value);
             this.imageId = value;
         },
         prevImage(value) {
-            console.log("value passed in emitter is", value);
             this.imageId = value;
         },
         deleteImage() {
@@ -153,10 +133,10 @@ Vue.createApp({
                 })
                     .then((result) => result.json())
                     .then((response) => {
-                        console.log(
-                            "response from delete image in app",
-                            response
-                        );
+                        // console.log(
+                        //     "response from delete image in app",
+                        //     response
+                        // );
                         if (response.success == true) {
                             //reset lowestid to prevent requests to nextimage
                             if (this.lowestImageId == this.imageId) {
@@ -170,19 +150,18 @@ Vue.createApp({
                             this.lastImageId = Math.min(
                                 ...this.images.map((item) => item.id)
                             );
-
                             //reset imageId
                             this.imageId = 0;
-                            history.pushState(null, null, "/");
-                            this.message = response.message;
 
-                            //clear the message after 2 seconds
+                            history.pushState(null, null, "/");
+
+                            this.message = response.message;
                             setTimeout(() => {
                                 this.message = "";
                             }, 2000);
                         } else {
+                            //delete was unsuccessful
                             alert("Unable to delete image, please try again");
-                            console.log("Deleting the image was unsuccessful");
                         }
                     });
             } else {
@@ -192,16 +171,14 @@ Vue.createApp({
         getNextImages() {
             this.lastImageId = Math.min(...this.images.map((item) => item.id));
             if (this.lowestImageId !== this.lastImageId) {
-                // console.log("inside the fetch request");
-                fetch(`/more/${this.lastImageId}`)
+                fetch(`/more-images/${this.lastImageId}`)
                     .then((result) => result.json())
                     .then((nextImages) => {
-                        // console.log("next images", nextImages);
                         //add next round of images to the array
                         for (let image of nextImages) {
                             this.images.push(image);
                         }
-                        //update lowestImageId and
+                        //update lowestImageId and lastImageId
                         this.lowestImageId = nextImages[0].lowestId;
                         this.lastImageId = Math.min(
                             ...this.images.map((item) => item.id)
@@ -210,49 +187,37 @@ Vue.createApp({
             }
         },
         showModal() {
+            //FIX THIS
             if (location.pathname.indexOf("/image/") === 0) {
-                console.log("inside if from location pathname");
-                console.log("location pathname", location.pathname);
                 this.imageId = +location.pathname.split("/").pop();
-                console.log(
-                    "this image id after location pathname",
-                    this.imageId
-                );
                 history.replaceState(null, null, `/${location.pathname}`);
             }
         },
-        //handler for the click event on the modal - change the current url to correspond to the selected image
+        //FIX THIS FOR NEXT-PREV - handler for the click event on the modal - change the current url to correspond to the selected image
         updateLocation() {
             history.pushState(null, null, `/image/${this.imageId}`);
         },
     },
 
-    //run this when the Vue lifecycle MOUNTED event happens
     mounted() {
-        console.log("Vue is ready to go!");
+        // console.log("Vue is ready to go!");
 
         fetch("/images")
             .then((answer) => answer.json())
             .then((imagesArray) => {
-                console.log("get images results", imagesArray);
-                // Vue understands 'this.images' above refers to the DATA's property named 'images'.
                 this.images = imagesArray;
                 this.lastImageId = Math.min(
                     ...this.images.map((item) => item.id)
                 );
             })
             .then(() =>
+                //load more images on scroll
                 setInterval(() => {
                     if (
                         document.documentElement.scrollTop +
                             window.innerHeight >
                         document.documentElement.offsetHeight - 50
                     ) {
-                        // console.log(
-                        //     "the user scrolled, last image id is",
-                        //     this.lastImageId
-                        // );
-                        console.log("call the get next images function");
                         this.getNextImages();
                     }
                 }, 250)
@@ -260,10 +225,10 @@ Vue.createApp({
 
         //open/close modal based on user interaction with the browser's back/forward buttons
         addEventListener("popstate", (e) => {
-            console.log(location.pathname, e.state);
             //update the imageId with the location.pathname
             this.imageId = +location.pathname.split("/").pop();
         });
+
         this.showModal();
     },
-}).mount("main"); //what's inside mount needs to refer to the selector
+}).mount("main");

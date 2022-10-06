@@ -1,25 +1,26 @@
-const spicedPg = require("spiced-pg");
-const username = "postgres";
-const password = "postgres";
-const database = "imageboard";
-const db = spicedPg(
-    `postgres:${username}:${password}@localhost:5432/${database}`
-);
+let databaseUrl;
+if (process.env.NODE_ENV === "production") {
+    databaseUrl = process.env.DATABASE_URL;
+} else {
+    const {
+        DB_USER,
+        DB_PASSWORD,
+        DB_HOST,
+        DB_PORT,
+        DB_NAME,
+    } = require("./secrets.json");
+    databaseUrl = `postgres:${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+}
 
-//get images query
+const spicedPg = require("spiced-pg");
+const db = spicedPg(databaseUrl);
+
 module.exports.getImages = () => {
     return db.query(`SELECT * FROM images ORDER BY created_at DESC LIMIT 6`);
-    // .then(function (result) {
-    //     console.log(result.rows);
-    // })
-    // .catch(function (err) {
-    //     console.log(err);
-    // });
 };
 
-//getImagesById updated to include prev and next id
-module.exports.getImagesById = (id) => {
-    // return db.query(`SELECT * FROM images WHERE id = '${id}'`);
+//query to get info for selected image, with subqueries for next & prev images
+module.exports.getImageInfo = (id) => {
     return db.query(
         `SELECT *, (SELECT id FROM images where id>${id} ORDER BY id LIMIT 1) AS "nextId", (SELECT id FROM images where id<${id} ORDER BY id DESC LIMIT 1) as "lastId" FROM images WHERE id = '${id}'`
     );
@@ -34,7 +35,6 @@ module.exports.getMoreImages = (lastImageId) => {
 
 module.exports.insertImage = (url, username, title, description) => {
     return db.query(
-        //add info returning all info
         `INSERT INTO images(url, username, title, description)
             VALUES ($1, $2, $3, $4) RETURNING *`,
         [url, username, title, description]
