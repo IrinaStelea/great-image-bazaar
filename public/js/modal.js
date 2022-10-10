@@ -13,30 +13,6 @@ const modalcomponent = {
     },
     emits: ["close-modal", "delete-image", "next", "prev"],
     props: ["id"],
-    // mounted() {
-    //     fetch(`/get-image/${this.id}`)
-    //         .then((result) => result.json())
-    //         .then((imgInfo) => {
-    //             //check if there is an image
-    //             if (imgInfo.length) {
-    //                 //pass the info to the data object in the modal
-    //                 this.modalImage = imgInfo[0];
-    //                 this.next = imgInfo[0].lastId;
-    //                 this.prev = imgInfo[0].nextId;
-    //                 //update the URL to match the selected image
-    //                 history.pushState(null, null, `/image/${imgInfo[0].id}`);
-    //                 //clean the date
-    //                 this.modalImage.created_at = imgInfo[0].created_at
-    //                     .slice(0, 10)
-    //                     .split("-")
-    //                     .reverse()
-    //                     .join("-");
-    //             } else {
-    //                 this.$emit("close-modal");
-    //                 history.replaceState(null, null, "/");
-    //             }
-    //         });
-    // },
     watch: {
         id: {
             immediate: true,
@@ -52,12 +28,6 @@ const modalcomponent = {
                             this.next = imgInfo[0].lastId;
                             this.prev = imgInfo[0].nextId;
                             // //update the URL to match the selected image
-                            // history.pushState(
-                            //     null,
-                            //     null,
-                            //     `/image/${imgInfo[0].id}`
-                            // );
-                            console.log("inside fetch in modal");
                             //clean the date
                             this.modalImage.created_at = imgInfo[0].created_at
                                 .slice(0, 10)
@@ -66,8 +36,8 @@ const modalcomponent = {
                                 .join("-");
                             //if the fetch does not return an image, close the modal and redirect to /
                         } else {
+                            console.log("inside else of fetch get image");
                             this.$emit("close-modal");
-                            history.replaceState(null, null, "/");
                         }
                     });
             },

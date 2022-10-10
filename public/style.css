@@ -158,15 +158,13 @@ input:not(:placeholder-shown) + label {
 
 .img-description {
     position: absolute;
-    bottom: 1vw;
+    bottom: 0.5vw;
     left: 2vw;
     color: snow;
     text-shadow: 1px 1px 1px #000;
 }
 
 .modal {
-    /* max-width: 50vw; */
-    /* max-height: 90vh; */
     max-width: calc(100% - 60px);
     max-height: calc(100% - 80px);
     background-color: snow;
@@ -175,13 +173,10 @@ input:not(:placeholder-shown) + label {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* top: 50%;
-    transform: translateY(-50%); */
-    z-index: 100;
+    z-index: 105;
     padding: 0.5vw;
     padding-bottom: 2vh;
-    color: black;
-    /* flex-wrap: wrap; */
+    /* color: black; */
 }
 
 .modal-image-container {

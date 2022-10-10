@@ -64,8 +64,8 @@ const commentcomponent = {
         <h5> Add a comment </h5>
             <div class="comment-form">
                 <div class="comment-fields">
-                <input type="text" v-model.trim="username" name="username" id="username" placeholder=" " />
-                <label for="username">Username*</label>
+                <input type="text" v-model.trim="username" name="username" id="username2" placeholder=" " />
+                <label for="username2">Username*</label>
                 </div>
                 <div class="comment-fields">
                 <input type="text" v-model.trim="comment" name="comment" id="comment" placeholder=" " />

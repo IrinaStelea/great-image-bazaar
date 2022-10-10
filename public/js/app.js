@@ -113,6 +113,7 @@ Vue.createApp({
         },
         closeModalInApp() {
             this.imageId = 0;
+            //update the URL so that it doesn't contain the image ID anymore
             history.replaceState(null, null, "/");
         },
         nextImage(value) {
@@ -138,10 +139,6 @@ Vue.createApp({
                 })
                     .then((result) => result.json())
                     .then((response) => {
-                        // console.log(
-                        //     "response from delete image in app",
-                        //     response
-                        // );
                         if (response.success == true) {
                             //reset lowestid to prevent requests to nextimage
                             if (this.lowestImageId == this.imageId) {
@@ -190,27 +187,6 @@ Vue.createApp({
                     });
             }
         },
-        // showModal() {
-        //     //check if the URL contains an image id and if yes, show that image
-        //     let urlId;
-        //     if (location.pathname.indexOf("/image/") === 0) {
-        //         urlId = +location.pathname.split("/").pop();
-        //         console.log("urlId", urlId);
-        //         if (!isNaN(urlId)) {
-        //             this.imageId = urlId;
-        //             console.log("image id in showModal", this.imageId);
-        //             //open/close modal based on user interaction with the browser's back/forward buttons
-        //             addEventListener("popstate", (e) => {
-        //                 //update the imageId with the location.pathname
-        //                 this.imageId = urlId;
-        //             });
-        //             // history.replaceState(null, null, `/${location.pathname}`);
-        //         }
-        //     } else {
-        //         this.imageId = 0;
-        //         history.replaceState(null, null, "/");
-        //     }
-        // },
         //handler for the click event on the modal - change the current url to correspond to the selected image
         updateLocation(id) {
             this.imageId = id;
@@ -220,26 +196,14 @@ Vue.createApp({
 
     mounted() {
         // console.log("Vue is ready to go!");
+        //check if the URL contains an image id and if yes, show that image
         let urlId;
         if (location.pathname.indexOf("/image/") == 0) {
             urlId = +location.pathname.split("/").pop();
-            console.log("url id", urlId);
             if (!isNaN(urlId)) {
                 this.imageId = urlId;
-                // history.replaceState(null, null, `/${location.pathname}`);
             }
         }
-
-        // if (!isNaN(location.pathname.slice(1))) {
-        //     this.imageId = location.pathname.slice(1);
-        //     console.log("this image id", this.imageId);
-        //     window.addEventListener("popstate", () => {
-        //         this.imageId = location.pathname.slice(1);
-        //     });
-        // } else {
-        //     this.imageId = 0;
-        //     history.replaceState({}, "", "/");
-        // }
         fetch("/images")
             .then((answer) => answer.json())
             .then((imagesArray) => {
@@ -263,7 +227,6 @@ Vue.createApp({
 
         //open/close modal based on user interaction with the browser's back/forward buttons
         window.addEventListener("popstate", () => {
-            console.log("inside pop state");
             this.imageId = +location.pathname.split("/").pop();
         });
     },
