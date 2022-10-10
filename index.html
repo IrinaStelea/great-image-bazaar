@@ -40,7 +40,7 @@
         <p>Latest results:</p>
         </div>
             <div id="results-grid">
-                <div class="image" v-for="image in images" ><img v-bind:src="image.url" v-bind:alt="image.title" @click="() => {this.imageId=image.id; updateLocation();}" @mouseover="hoverTarget = image.id" @mouseleave="hoverTarget = null"/>
+                <div class="image" v-for="image in images" ><img v-bind:src="image.url" :key="image.id" v-bind:alt="image.title" @click="updateLocation(image.id)" @mouseover="hoverTarget = image.id" @mouseleave="hoverTarget = null"/>
                 <div class="img-description" v-if="hoverTarget === image.id">{{image.title}}
                 </div>
                 </div>

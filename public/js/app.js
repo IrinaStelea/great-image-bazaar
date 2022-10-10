@@ -29,54 +29,55 @@ Vue.createApp({
         handleFileChange(e) {
             this.file = e.target.files[0];
         },
-        submitForm() {
+        validateForm() {
+            this.error = "";
             //form validation client-side
-            if (!this.title) {
-                this.error = "Please include a title for your image";
-                return;
+            let mandatoryFields = ["title", "username", "file"];
+            for (let field of mandatoryFields) {
+                if (!this[field]) {
+                    this.error += `Please include a ${field} \n`;
+                }
             }
 
-            if (this.title.length > 70) {
-                this.error = "Image title must be max 70 characters long";
-                return;
+            if (this.title && this.title.length > 70) {
+                this.error += "Image title must be max 70 characters long \n";
             }
 
-            if (!this.username) {
-                this.error = "Please include a username";
-                return;
+            if (this.username && this.username.length > 35) {
+                this.error += "Username must be max 35 characters long \n";
             }
 
-            if (this.username.length > 35) {
-                this.error = "Username must be max 35 characters long";
+            if (this.file) {
+                //file type validation
+                let extension = this.file.name.substr(
+                    this.file.name.lastIndexOf(".")
+                );
+
+                if (extension == "") {
+                    this.error += "Please upload a valid image file \n";
+                }
+
+                if (
+                    extension.toLowerCase() != ".gif" &&
+                    extension.toLowerCase() != ".jpg" &&
+                    extension.toLowerCase() != ".jpeg" &&
+                    extension.toLowerCase() != ".png" &&
+                    extension != ""
+                ) {
+                    this.error += "Please upload a valid image file \n";
+                }
+
+                //file size validation
+                if (this.file.size > 2097152) {
+                    this.error += "Image must be max 2 MB \n";
+                }
+            }
+        },
+        submitForm() {
+            this.validateForm();
+            if (this.error) {
                 return;
             }
-
-            if (!this.file) {
-                this.error = "Please add an image";
-                return;
-            }
-
-            //file type validation
-            let extension = this.file.name.substr(
-                this.file.name.lastIndexOf(".")
-            );
-
-            if (extension == "") {
-                this.error = "Please upload a valid image file";
-                return;
-            }
-
-            if (
-                extension.toLowerCase() != ".gif" &&
-                extension.toLowerCase() != ".jpg" &&
-                extension.toLowerCase() != ".jpeg" &&
-                extension.toLowerCase() != ".png" &&
-                extension != ""
-            ) {
-                this.error = "Please upload a valid image file";
-                return;
-            }
-
             // collect form info into FormData - title, description & username are collected via v-model
             const formData = new FormData();
             formData.append("file", this.file);
@@ -112,13 +113,17 @@ Vue.createApp({
         },
         closeModalInApp() {
             this.imageId = 0;
-            history.pushState(null, null, "/");
+            history.replaceState(null, null, "/");
         },
         nextImage(value) {
             this.imageId = value;
+            //update the URL to match the selected image
+            history.pushState(null, null, `/image/${value}`);
         },
         prevImage(value) {
             this.imageId = value;
+            //update the URL to match the selected image
+            history.pushState(null, null, `/image/${value}`);
         },
         deleteImage() {
             if (confirm("Are you sure you want to delete the image?") == true) {
@@ -152,7 +157,6 @@ Vue.createApp({
                             );
                             //reset imageId
                             this.imageId = 0;
-
                             history.pushState(null, null, "/");
 
                             this.message = response.message;
@@ -186,22 +190,56 @@ Vue.createApp({
                     });
             }
         },
-        showModal() {
-            //FIX THIS
-            if (location.pathname.indexOf("/image/") === 0) {
-                this.imageId = +location.pathname.split("/").pop();
-                history.replaceState(null, null, `/${location.pathname}`);
-            }
-        },
-        //FIX THIS FOR NEXT-PREV - handler for the click event on the modal - change the current url to correspond to the selected image
-        updateLocation() {
-            history.pushState(null, null, `/image/${this.imageId}`);
+        // showModal() {
+        //     //check if the URL contains an image id and if yes, show that image
+        //     let urlId;
+        //     if (location.pathname.indexOf("/image/") === 0) {
+        //         urlId = +location.pathname.split("/").pop();
+        //         console.log("urlId", urlId);
+        //         if (!isNaN(urlId)) {
+        //             this.imageId = urlId;
+        //             console.log("image id in showModal", this.imageId);
+        //             //open/close modal based on user interaction with the browser's back/forward buttons
+        //             addEventListener("popstate", (e) => {
+        //                 //update the imageId with the location.pathname
+        //                 this.imageId = urlId;
+        //             });
+        //             // history.replaceState(null, null, `/${location.pathname}`);
+        //         }
+        //     } else {
+        //         this.imageId = 0;
+        //         history.replaceState(null, null, "/");
+        //     }
+        // },
+        //handler for the click event on the modal - change the current url to correspond to the selected image
+        updateLocation(id) {
+            this.imageId = id;
+            history.pushState(null, null, `/image/${id}`);
         },
     },
 
     mounted() {
         // console.log("Vue is ready to go!");
+        let urlId;
+        if (location.pathname.indexOf("/image/") == 0) {
+            urlId = +location.pathname.split("/").pop();
+            console.log("url id", urlId);
+            if (!isNaN(urlId)) {
+                this.imageId = urlId;
+                // history.replaceState(null, null, `/${location.pathname}`);
+            }
+        }
 
+        // if (!isNaN(location.pathname.slice(1))) {
+        //     this.imageId = location.pathname.slice(1);
+        //     console.log("this image id", this.imageId);
+        //     window.addEventListener("popstate", () => {
+        //         this.imageId = location.pathname.slice(1);
+        //     });
+        // } else {
+        //     this.imageId = 0;
+        //     history.replaceState({}, "", "/");
+        // }
         fetch("/images")
             .then((answer) => answer.json())
             .then((imagesArray) => {
@@ -224,11 +262,9 @@ Vue.createApp({
             );
 
         //open/close modal based on user interaction with the browser's back/forward buttons
-        addEventListener("popstate", (e) => {
-            //update the imageId with the location.pathname
+        window.addEventListener("popstate", () => {
+            console.log("inside pop state");
             this.imageId = +location.pathname.split("/").pop();
         });
-
-        this.showModal();
     },
 }).mount("main");

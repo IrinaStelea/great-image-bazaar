@@ -19,7 +19,7 @@ app.get("/images", (req, res) => {
 });
 
 //get dynamic route for image in each modal
-app.get("/image/:id", (req, res) => {
+app.get("/get-image/:id", (req, res) => {
     db.getImageInfo(req.params.id)
         .then((result) => {
             return res.json(result.rows);
@@ -92,7 +92,7 @@ app.post("/comment", (req, res) => {
 //dynamic post route for deleting images
 app.post("/delete-image/:id", (req, res) => {
     db.deleteImage(req.params.id)
-        .then((result) => {
+        .then(() => {
             res.json({
                 message: "Deleting the image was successful",
                 success: true,

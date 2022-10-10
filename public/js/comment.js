@@ -10,7 +10,6 @@ const commentcomponent = {
     },
     props: ["commentId"],
     mounted() {
-        console.log("props comment: ", this.commentId);
         fetch(`/comments/${this.commentId}`)
             .then((answer) => answer.json())
             .then((commentsArray) => {

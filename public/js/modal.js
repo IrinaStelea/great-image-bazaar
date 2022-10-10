@@ -13,27 +13,62 @@ const modalcomponent = {
     },
     emits: ["close-modal", "delete-image", "next", "prev"],
     props: ["id"],
-    mounted() {
-        // console.log("props: ", this.id);
-    },
+    // mounted() {
+    //     fetch(`/get-image/${this.id}`)
+    //         .then((result) => result.json())
+    //         .then((imgInfo) => {
+    //             //check if there is an image
+    //             if (imgInfo.length) {
+    //                 //pass the info to the data object in the modal
+    //                 this.modalImage = imgInfo[0];
+    //                 this.next = imgInfo[0].lastId;
+    //                 this.prev = imgInfo[0].nextId;
+    //                 //update the URL to match the selected image
+    //                 history.pushState(null, null, `/image/${imgInfo[0].id}`);
+    //                 //clean the date
+    //                 this.modalImage.created_at = imgInfo[0].created_at
+    //                     .slice(0, 10)
+    //                     .split("-")
+    //                     .reverse()
+    //                     .join("-");
+    //             } else {
+    //                 this.$emit("close-modal");
+    //                 history.replaceState(null, null, "/");
+    //             }
+    //         });
+    // },
     watch: {
         id: {
             immediate: true,
             handler(newValue, oldValue) {
-                console.log("watch change of next value", oldValue, newValue);
-                fetch(`/image/${newValue}`)
+                // console.log("watch change of next value", oldValue, newValue);
+                fetch(`/get-image/${newValue}`)
                     .then((result) => result.json())
                     .then((imgInfo) => {
-                        //pass the info to the data object in the modal
-                        this.modalImage = imgInfo[0];
-                        this.next = imgInfo[0].lastId;
-                        this.prev = imgInfo[0].nextId;
-                        //clean the date
-                        this.modalImage.created_at = imgInfo[0].created_at
-                            .slice(0, 10)
-                            .split("-")
-                            .reverse()
-                            .join("-");
+                        //check if there is an image
+                        if (imgInfo.length) {
+                            //pass the info to the data object in the modal
+                            this.modalImage = imgInfo[0];
+                            this.next = imgInfo[0].lastId;
+                            this.prev = imgInfo[0].nextId;
+                            // //update the URL to match the selected image
+                            // history.pushState(
+                            //     null,
+                            //     null,
+                            //     `/image/${imgInfo[0].id}`
+                            // );
+                            console.log("inside fetch in modal");
+                            //clean the date
+                            this.modalImage.created_at = imgInfo[0].created_at
+                                .slice(0, 10)
+                                .split("-")
+                                .reverse()
+                                .join("-");
+                            //if the fetch does not return an image, close the modal and redirect to /
+                        } else {
+                            this.$emit("close-modal");
+                            history.replaceState(null, null, "/");
+                        }
                     });
             },
         },
@@ -66,11 +101,12 @@ const modalcomponent = {
             <p class="modal-description">{{modalImage.description}}</p>
             <p id="detail-component">Uploaded by {{modalImage.username}} on {{modalImage.created_at}} </p>
             <input type="submit" value="Delete image" class="btn-submit" id="delete-image" @click="deleteImageInComponent" />
-            <comment-component :commentId="id"></comment-component>
+            <comment-component :commentId="id" :key="id"></comment-component>
             </div>
         </div>
         <div class="overlay"></div>
     `,
+    //note the use of "key" in the comment component so that it reacts to changes in id in the parent (Vue will know to separate one comment component from the other)
 };
 
 export default modalcomponent;

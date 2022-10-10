@@ -134,6 +134,7 @@ input:not(:placeholder-shown) + label {
 .error {
     font-style: italic;
     color: tomato;
+    white-space: pre-wrap;
 }
 
 .btn-submit {
