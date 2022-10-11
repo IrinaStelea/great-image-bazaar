@@ -36,9 +36,6 @@ const modalcomponent = {
                                 .join("-");
                             //if the fetch does not return an image, close the modal and redirect to /
                         } else {
-                            console.log(
-                                "inside else branch of fetch get image"
-                            );
                             this.$emit("close-modal");
                         }
                     });

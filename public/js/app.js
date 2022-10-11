@@ -114,7 +114,7 @@ Vue.createApp({
         closeModalInApp() {
             this.imageId = 0;
             //update the URL so that it doesn't contain the image ID anymore
-            history.replaceState(null, null, "/");
+            history.pushState(null, null, "/");
         },
         nextImage(value) {
             this.imageId = value;
@@ -190,6 +190,7 @@ Vue.createApp({
         //handler for the click event on the modal - change the current url to correspond to the selected image
         updateLocation(id) {
             this.imageId = id;
+            console.log(`inside update location`, this.imageId);
             history.pushState(null, null, `/image/${id}`);
         },
     },
