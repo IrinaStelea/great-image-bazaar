@@ -16,7 +16,7 @@ const modalcomponent = {
     watch: {
         id: {
             immediate: true,
-            handler(newValue, oldValue) {
+            handler(newValue) {
                 // console.log("watch change of next value", oldValue, newValue);
                 fetch(`/get-image/${newValue}`)
                     .then((result) => result.json())
@@ -36,7 +36,9 @@ const modalcomponent = {
                                 .join("-");
                             //if the fetch does not return an image, close the modal and redirect to /
                         } else {
-                            console.log("inside else of fetch get image");
+                            console.log(
+                                "inside else branch of fetch get image"
+                            );
                             this.$emit("close-modal");
                         }
                     });

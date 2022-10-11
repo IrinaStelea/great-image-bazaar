@@ -6,7 +6,7 @@ const { uploader } = require("./middleware");
 const db = require("./db.js");
 const PORT = 8080;
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "./public")));
 app.use(express.json());
 
 //get images on app mount
