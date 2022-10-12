@@ -50,6 +50,17 @@ app.get("/comments/:id", (req, res) => {
         });
 });
 
+//check for newly added images
+app.get("/new-images/:id", (req, res) => {
+    db.checkNewImages(req.params.id)
+        .then((result) => {
+            return res.json(result.rows);
+        })
+        .catch((err) => {
+            console.log("error in checking for new images", err);
+        });
+});
+
 //post route for image upload w/ middleware for multer & S3
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     const fullImageUrl = path.join(

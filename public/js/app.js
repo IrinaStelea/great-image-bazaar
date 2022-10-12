@@ -17,6 +17,8 @@ Vue.createApp({
             timer: null,
             hoverTarget: null,
             nextId: null,
+            newImagesNotification: false,
+            newImages: [],
         };
     },
     components: {
@@ -190,19 +192,24 @@ Vue.createApp({
         //handler for the click event on the modal - change the current url to correspond to the selected image
         updateLocation(id) {
             this.imageId = id;
-            console.log(`inside update location`, this.imageId);
             history.pushState(null, null, `/image/${id}`);
+        },
+
+        refreshImages() {
+            for (let newImage of this.newImages) {
+                this.images.unshift(newImage);
+            }
+            this.newImagesNotification = false;
         },
     },
 
     mounted() {
         // console.log("Vue is ready to go!");
         //check if the URL contains an image id and if yes, show that image
-        let urlId;
         if (location.pathname.indexOf("/image/") == 0) {
-            urlId = +location.pathname.split("/").pop();
-            if (!isNaN(urlId)) {
-                this.imageId = urlId;
+            let urlImageId = +location.pathname.split("/").pop();
+            if (!isNaN(urlImageId)) {
+                this.imageId = urlImageId;
             }
         }
         fetch("/images")
@@ -226,8 +233,21 @@ Vue.createApp({
                 }, 250)
             );
 
-        //open/close modal based on user interaction with the browser's back/forward buttons
+        //check for newly added images
+        setInterval(() => {
+            // dynamic fetch based on the id of the newest image
+            fetch(`/new-images/${this.images[0].id}`)
+                .then((answer) => answer.json())
+                .then((newImagesArray) => {
+                    if (newImagesArray.length) {
+                        this.newImagesNotification = true;
+                        this.newImages = newImagesArray;
+                    }
+                });
+        }, 5000);
+        //listen to history changes - open/close modal based on user interaction with the browser's back/forward buttons
         window.addEventListener("popstate", () => {
+            //note: OK to use "this" as long as defined as an arrow function; as a normal function, "this" would refer to the window
             this.imageId = +location.pathname.split("/").pop();
         });
     },

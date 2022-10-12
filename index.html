@@ -12,6 +12,7 @@
     </head>
     <body>
         <main>
+            <img v-if="newImagesNotification" id="new-image-notification" src="../new-image-notification.png" alt="notification" @click="refreshImages()" />
             <div class="container">
         <h1>The great image bazaar</h1>
 <p>Upload your image</p>
@@ -36,9 +37,9 @@
     </form>
 <!-- show the error/status message -->
 <span class="error">{{ error }} </span>
-    <span class="status">{{ message }} </span>
+    <p class="status">{{ message }} </p>
     
-        <p>Latest results:</p>
+        <p>Latest images:</p>
         </div>
             <div id="results-grid">
                 <div class="image" v-for="image in images" ><img v-bind:src="image.url" :key="image.id" v-bind:alt="image.title" @click="updateLocation(image.id)" @mouseover="hoverTarget = image.id" @mouseleave="hoverTarget = null"/>

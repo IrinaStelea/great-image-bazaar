@@ -33,6 +33,13 @@ module.exports.getMoreImages = (lastImageId) => {
     );
 };
 
+module.exports.checkNewImages = (newestImageId) => {
+    return db.query(
+        `SELECT * FROM images WHERE id > $1 ORDER BY created_at ASC`,
+        [newestImageId]
+    );
+};
+
 module.exports.insertImage = (url, username, title, description) => {
     return db.query(
         `INSERT INTO images(url, username, title, description)

@@ -22,6 +22,14 @@ main {
     width: 90vw;
 }
 
+#new-image-notification {
+    position: fixed;
+    width: 3vw;
+    top: 15px;
+    right: 15px;
+    animation: notification 5000ms infinite;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -127,8 +135,15 @@ input:not(:placeholder-shown) + label {
 }
 
 .status {
+    position: relative;
     font-style: italic;
     color: slategray;
+}
+
+/* adding empty content before the status message so that it always has height and doesn't push down the content */
+.status:empty::before {
+    content: "";
+    display: inline-block;
 }
 
 .error {
@@ -298,6 +313,66 @@ input:not(:placeholder-shown) + label {
     }
 } */
 
+@keyframes notification {
+    0% {
+        transform: rotate(0deg);
+    }
+    8.0% {
+        transform: rotate(0deg);
+    }
+    12.0% {
+        transform: rotate(42deg);
+    }
+    16.0% {
+        transform: rotate(-35deg);
+    }
+    20.0% {
+        transform: rotate(0deg);
+    }
+    23.0% {
+        transform: rotate(28deg);
+    }
+    26.0% {
+        transform: rotate(-20deg);
+    }
+    29.0% {
+        transform: rotate(0deg);
+    }
+    31.0% {
+        transform: rotate(16deg);
+    }
+    33.0% {
+        transform: rotate(-12deg);
+    }
+    35.0% {
+        transform: rotate(0deg);
+    }
+    37.0% {
+        transform: rotate(-6deg);
+    }
+    39.0% {
+        transform: rotate(0deg);
+    }
+    40.0% {
+        transform: rotate(6deg);
+    }
+    44.0% {
+        transform: rotate(-3deg);
+    }
+    49.0% {
+        transform: rotate(2deg);
+    }
+    55.0% {
+        transform: rotate(0deg);
+    }
+    62.0% {
+        transform: rotate(1deg);
+    }
+    70.0% {
+        transform: rotate(0deg);
+    }
+}
+
 @media screen and (min-width: 320px) and (max-width: 1024px) {
     #results-grid {
         grid-template-columns: 1fr;
@@ -329,6 +404,12 @@ input:not(:placeholder-shown) + label {
     .comment-form {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
         gap: 2vh;
+    }
+
+    #new-image-notification {
+        width: 5vw;
+        top: 10px;
+        right: 10px;
     }
 }
 
