@@ -4,7 +4,6 @@ const commentcomponent = {
             comments: [],
             username: "",
             comment: "",
-            hasComments: false,
             error: "",
         };
     },
@@ -15,10 +14,6 @@ const commentcomponent = {
             .then((commentsArray) => {
                 this.comments = commentsArray;
             });
-        //TO FIX: is this variable necessary???
-        if (this.comments) {
-            this.hasComments = true;
-        }
     },
     methods: {
         cleanDate(date) {
@@ -53,7 +48,7 @@ const commentcomponent = {
                     this.username = "";
                     this.comment = "";
                     this.error = "";
-                    // comment should be displayed in the comment list immediately
+                    // display comment in comment list immediately
                     this.comments.unshift(data.newComment);
                 });
         },

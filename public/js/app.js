@@ -33,6 +33,7 @@ Vue.createApp({
         },
         validateForm() {
             this.error = "";
+
             //form validation client-side
             let mandatoryFields = ["title", "username", "file"];
             for (let field of mandatoryFields) {
@@ -120,12 +121,12 @@ Vue.createApp({
         },
         nextImage(value) {
             this.imageId = value;
-            //update the URL to match the selected image
+            //update the URL to match the ID of the selected image
             history.pushState(null, null, `/image/${value}`);
         },
         prevImage(value) {
             this.imageId = value;
-            //update the URL to match the selected image
+            //update the URL to match the ID of the selected image
             history.pushState(null, null, `/image/${value}`);
         },
         deleteImage() {
@@ -156,6 +157,7 @@ Vue.createApp({
                             );
                             //reset imageId
                             this.imageId = 0;
+                            //update the URL
                             history.pushState(null, null, "/");
 
                             this.message = response.message;
@@ -189,12 +191,12 @@ Vue.createApp({
                     });
             }
         },
-        //handler for the click event on the modal - change the current url to correspond to the selected image
+        //handler for the click event on the modal - change the current URL to contain the ID of the selected image
         updateLocation(id) {
             this.imageId = id;
             history.pushState(null, null, `/image/${id}`);
         },
-
+        //click handler on new image notification - adds the new images to the gallery
         refreshImages() {
             for (let newImage of this.newImages) {
                 this.images.unshift(newImage);
@@ -204,7 +206,7 @@ Vue.createApp({
     },
 
     mounted() {
-        // console.log("Vue is ready to go!");
+        // console.log("Vue is ready to go");
         //check if the URL contains an image id and if yes, show that image
         if (location.pathname.indexOf("/image/") == 0) {
             let urlImageId = +location.pathname.split("/").pop();
@@ -245,7 +247,8 @@ Vue.createApp({
                     }
                 });
         }, 5000);
-        //listen to history changes - open/close modal based on user interaction with the browser's back/forward buttons
+
+        //listen to browser history changes - open/close modal based on user interaction with the browser's back/forward buttons
         window.addEventListener("popstate", () => {
             //note: OK to use "this" as long as defined as an arrow function; as a normal function, "this" would refer to the window
             this.imageId = +location.pathname.split("/").pop();

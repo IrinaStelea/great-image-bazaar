@@ -17,7 +17,6 @@ const modalcomponent = {
         id: {
             immediate: true,
             handler(newValue) {
-                // console.log("watch change of next value", oldValue, newValue);
                 fetch(`/get-image/${newValue}`)
                     .then((result) => result.json())
                     .then((imgInfo) => {
@@ -27,15 +26,14 @@ const modalcomponent = {
                             this.modalImage = imgInfo[0];
                             this.next = imgInfo[0].lastId;
                             this.prev = imgInfo[0].nextId;
-                            // //update the URL to match the selected image
-                            //clean the date
+
                             this.modalImage.created_at = imgInfo[0].created_at
                                 .slice(0, 10)
                                 .split("-")
                                 .reverse()
                                 .join("-");
-                            //if the fetch does not return an image, close the modal and redirect to /
                         } else {
+                            //if the fetch does not return an image, close the modal
                             this.$emit("close-modal");
                         }
                     });
@@ -44,7 +42,6 @@ const modalcomponent = {
     },
     methods: {
         closeModalInComponent: function () {
-            // here we need to tell the parent to do something for us
             this.$emit("close-modal");
         },
         deleteImageInComponent: function () {

@@ -56,52 +56,34 @@ Instagram-like SPA allowing any user to upload, view, comment and delete images.
 -   install all the dependencies with `npm install`
 -   run the project locally with `npm start` and open it at `localhost:8080`
 
-<!-- ## Previews
+## Previews
 
-### Login + own profile + edit bio
+### Gallery view + load more on scroll
 
-<img src="client/public/login_editbio.gif">
-
-<br>
-
-### Uploading a profile pic
-
-<img src="client/public/user_upload.gif">
+<img src="public/gallery_pagination.gif">
 
 <br>
 
-### Wall posts
+### Uploading an image
 
-<img src="client/public/wall_post.gif">
-
-<br>
-
-### User search
-
-<img src="client/public/user_search.gif">
+<img src="public/image_upload.gif">
 
 <br>
 
-### Real-time friendship notifications and managing own friends
+### Commenting on images
 
-<img src="client/public/friendship.gif">
-
-<br>
-
-### Profile of other users
-
-<img src="client/public/other_user_profile.gif">
+<img src="public/comment.gif">
 
 <br>
 
-### Live chat with list of online users and "friend is online" notification
+### Single image view + routing
 
-<img src="client/public/live_chat.gif">
+<img src="public/single_view_routing.gif">
 
 <br>
 
-### Delete account preview and logout
+### New image notification
 
-<img src="client/public/delete_logout.gif">
+<img src="public/new_image_notification.gif">
 
-<br> -->
+<br>

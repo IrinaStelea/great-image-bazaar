@@ -45,7 +45,6 @@ p {
 
 h1 {
     font-family: "Open Sans", sans-serif;
-    /* letter-spacing: 0.1em; */
     font-size: 4em;
     font-weight: 700;
     background-image: linear-gradient(
@@ -56,11 +55,10 @@ h1 {
         mediumspringgreen
     );
     -webkit-background-clip: text;
-    /* background-clip: text; */
+    background-clip: text;
     color: transparent;
     background-size: 300%;
     background-position: -100%;
-    animation: animatedH1 5s infinite alternate-reverse;
 }
 
 .form-upload {
@@ -84,7 +82,6 @@ h1 {
     position: relative;
 }
 
-/* .form-upload label */
 label {
     position: absolute;
     left: 0;
@@ -93,7 +90,6 @@ label {
     transition: transform 0.1s ease-in-out, color 0.1s ease-in-out;
 }
 
-/* .form-upload input { */
 input {
     outline: none;
     border: none;
@@ -103,7 +99,6 @@ input {
     font-family: "Open Sans", sans-serif;
 }
 
-/* .form-upload input:focus + label, */
 input:focus + label,
 input:not(:placeholder-shown) + label {
     color: rgb(109, 102, 96);
@@ -140,7 +135,7 @@ input:not(:placeholder-shown) + label {
     color: slategray;
 }
 
-/* adding empty content before the status message so that it always has height and doesn't push down the content */
+/* adding content before the status message when it is empty so that it always has height and doesn't push down the content when it appears */
 .status:empty::before {
     content: "";
     display: inline-block;
@@ -191,11 +186,9 @@ input:not(:placeholder-shown) + label {
     z-index: 105;
     padding: 0.5vw;
     padding-bottom: 2vh;
-    /* color: black; */
 }
 
 .modal-image-container {
-    /* width: 100%; */
     position: relative;
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -282,10 +275,6 @@ input:not(:placeholder-shown) + label {
     font-size: 0.8em;
 }
 
-/* .comment-form input {
-    margin-right: 20px;
-} */
-
 .comments > p,
 #error-comment {
     font-size: 0.8em;
@@ -306,12 +295,6 @@ input:not(:placeholder-shown) + label {
 #delete-image:hover {
     text-decoration: underline;
 }
-
-/* @keyframes animatedH1 {
-    to {
-        background-position: 100%;
-    }
-} */
 
 @keyframes notification {
     0% {
@@ -390,7 +373,6 @@ input:not(:placeholder-shown) + label {
     }
 
     .modal {
-        /* max-width: calc(100% - 20px); */
         max-height: calc(100% - 10px);
         top: auto;
         left: auto;
