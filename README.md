@@ -72,7 +72,7 @@ Instagram-like SPA allowing any user to upload, view, comment and delete images.
 
 ### Commenting on images
 
-<img src="public/comment.gif">
+<img src="public/comment_.gif">
 
 <br>
 
