@@ -60,13 +60,13 @@ Instagram-like SPA allowing any user to upload, view, comment and delete images.
 
 ### Gallery view + load more on scroll
 
-<img src="public/gallery_pagination.gif">
+<img src="public/gallery_pagination_.gif">
 
 <br>
 
 ### Uploading an image
 
-<img src="public/image_upload.gif">
+<img src="public/image_upload_.gif">
 
 <br>
 
@@ -78,12 +78,12 @@ Instagram-like SPA allowing any user to upload, view, comment and delete images.
 
 ### Single image view + routing
 
-<img src="public/single_view_routing.gif">
+<img src="public/single_view_routing_.gif">
 
 <br>
 
 ### New image notification
 
-<img src="public/new_image_notification.gif">
+<img src="public/new_image_notification_.gif">
 
 <br>
