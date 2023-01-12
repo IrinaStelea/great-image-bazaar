@@ -3,11 +3,9 @@ services:
       name: great-image-bazaar
       env: node
       plan: free
-      region: frankfurt
       startCommand: node server.js
       buildCommand: npm install
 
 databases:
     - name: socialnetwork
       plan: free
-
