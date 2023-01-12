@@ -3,7 +3,7 @@ services:
       name: imageboard
       env: node
       plan: free
-      startCommand: npm run start
+      startCommand: node server.js
       envVars:
           - key: DATABASE_URL
             fromDatabase:
@@ -13,3 +13,6 @@ services:
 databases:
     - name: socialnetwork
       plan: free
+
+envVarGroups:
+  - name: imageboard
