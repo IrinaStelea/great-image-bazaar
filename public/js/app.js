@@ -232,7 +232,7 @@ Vue.createApp({
                     ) {
                         this.getNextImages();
                     }
-                }, 250)
+                }, 500)
             );
 
         //check for newly added images
