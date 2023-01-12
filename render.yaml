@@ -3,6 +3,7 @@ services:
       name: imageboard
       env: node
       plan: free
+      region: frankfurt
       startCommand: node server.js
       buildCommand: npm install
       envVars:
