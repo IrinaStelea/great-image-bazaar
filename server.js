@@ -4,9 +4,20 @@ const path = require("path");
 const s3 = require("./s3");
 const { uploader } = require("./middleware");
 const db = require("./db.js");
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
+
+if (process.env.NODE_ENV == "production") {
+    app.use((req, res, next) => {
+        if (req.headers["x-forwarded-proto"].startsWith("https")) {
+            return next();
+        }
+        res.redirect(`https://${req.hostname}${req.url}`);
+    });
+}
 
 app.use(express.static(path.join(__dirname, "./public")));
+app.use(express.static(path.join(__dirname, "uploads")));
+
 app.use(express.json());
 
 //get images on app mount
