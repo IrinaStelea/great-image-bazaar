@@ -4,6 +4,7 @@ services:
       env: node
       plan: free
       startCommand: node server.js
+      buildCommand: npm install
       envVars:
           - key: DATABASE_URL
             fromDatabase:
@@ -15,4 +16,4 @@ databases:
       plan: free
 
 envVarGroups:
-  - name: imageboard
+    - name: imageboard
