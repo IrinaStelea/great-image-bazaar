@@ -74,10 +74,7 @@ app.get("/new-images/:id", (req, res) => {
 
 //post route for image upload w/ middleware for multer & S3
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    const fullImageUrl = path.join(
-        "https://s3.amazonaws.com/ihamspiced",
-        `${req.file.filename}`
-    );
+    const fullImageUrl = `https://s3.amazonaws.com/ihamspiced/${req.file.filename}`;
     db.insertImage(
         fullImageUrl,
         req.body.username,
